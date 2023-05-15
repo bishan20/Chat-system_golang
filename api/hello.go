@@ -10,7 +10,7 @@ type HelloResponse struct {
 	Message string `json:"message"`
 }
 
-func (server *Server) Hello(c *gin.Context) {
+func (server *Server) hello(c *gin.Context) {
 	msg := HelloResponse{
 		Message: "Hello World",
 	}
