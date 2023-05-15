@@ -20,7 +20,9 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 		config: config,
 		store:  store,
 	}
+
 	server.setupRouter()
+
 	return server, nil
 }
 
@@ -40,7 +42,10 @@ func (server *Server) setupRouter() {
 
 	routerVersionOne := router.Group("/v1")
 	{
-		routerVersionOne.GET("/hello", server.Hello)
+		routerVersionOne.GET("/hello", server.hello)
+		routerVersionOne.GET("/ws", func(ctx *gin.Context) {
+			webSocketHandler(ctx.Writer, ctx.Request)
+		})
 	}
 
 	server.router = router

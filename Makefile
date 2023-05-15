@@ -15,6 +15,12 @@ goosedown:
 images:
 	sudo docker images
 
+container:
+	sudo docker ps
+
+container-all:
+	sudo docker ps -a
+
 rm:
 	sudo docker rm chat-system_golang_api_1
 
@@ -23,5 +29,11 @@ rmi:
 
 docker:
 	sudo docker-compose up
+
+postgres:
+	sudo docker start chat-system_golang_postgres_1
+
+go:
+	go run main.go
 
 
