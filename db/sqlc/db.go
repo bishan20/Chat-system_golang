@@ -27,6 +27,15 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.createUserStmt, err = db.PrepareContext(ctx, createUser); err != nil {
 		return nil, fmt.Errorf("error preparing query CreateUser: %w", err)
 	}
+	if q.deleteMessageStmt, err = db.PrepareContext(ctx, deleteMessage); err != nil {
+		return nil, fmt.Errorf("error preparing query DeleteMessage: %w", err)
+	}
+	if q.storeMessageStmt, err = db.PrepareContext(ctx, storeMessage); err != nil {
+		return nil, fmt.Errorf("error preparing query StoreMessage: %w", err)
+	}
+	if q.updateMessageStmt, err = db.PrepareContext(ctx, updateMessage); err != nil {
+		return nil, fmt.Errorf("error preparing query UpdateMessage: %w", err)
+	}
 	return &q, nil
 }
 
@@ -35,6 +44,21 @@ func (q *Queries) Close() error {
 	if q.createUserStmt != nil {
 		if cerr := q.createUserStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing createUserStmt: %w", cerr)
+		}
+	}
+	if q.deleteMessageStmt != nil {
+		if cerr := q.deleteMessageStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing deleteMessageStmt: %w", cerr)
+		}
+	}
+	if q.storeMessageStmt != nil {
+		if cerr := q.storeMessageStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing storeMessageStmt: %w", cerr)
+		}
+	}
+	if q.updateMessageStmt != nil {
+		if cerr := q.updateMessageStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing updateMessageStmt: %w", cerr)
 		}
 	}
 	return err
@@ -74,15 +98,21 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db             DBTX
-	tx             *sql.Tx
-	createUserStmt *sql.Stmt
+	db                DBTX
+	tx                *sql.Tx
+	createUserStmt    *sql.Stmt
+	deleteMessageStmt *sql.Stmt
+	storeMessageStmt  *sql.Stmt
+	updateMessageStmt *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:             tx,
-		tx:             tx,
-		createUserStmt: q.createUserStmt,
+		db:                tx,
+		tx:                tx,
+		createUserStmt:    q.createUserStmt,
+		deleteMessageStmt: q.deleteMessageStmt,
+		storeMessageStmt:  q.storeMessageStmt,
+		updateMessageStmt: q.updateMessageStmt,
 	}
 }

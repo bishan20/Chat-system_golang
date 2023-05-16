@@ -4,7 +4,7 @@ sqlc:
 	sqlc generate
 
 migcrt:
-	goose -dir ./db/migration/ create initial_schema sql
+	goose -dir ./db/migration/ create add_messages sql
 
 gooseup:
 	goose -dir ./db/migration/ -v postgres "$(DB_URL)" up
