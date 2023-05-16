@@ -4,11 +4,16 @@
 
 package db
 
-import (
-	"database/sql"
-)
+import ()
+
+type Message struct {
+	ID         int32  `db:"id" json:"id"`
+	Message    string `db:"message" json:"message"`
+	SenderID   int32  `db:"sender_id" json:"sender_id"`
+	ReceiverID int32  `db:"receiver_id" json:"receiver_id"`
+}
 
 type User struct {
-	ID   int32          `db:"id" json:"id"`
-	Name sql.NullString `db:"name" json:"name"`
+	ID   int32  `db:"id" json:"id"`
+	Name string `db:"name" json:"name"`
 }

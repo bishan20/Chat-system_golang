@@ -6,11 +6,13 @@ package db
 
 import (
 	"context"
-	"database/sql"
 )
 
 type Querier interface {
-	CreateUser(ctx context.Context, name sql.NullString) (User, error)
+	CreateUser(ctx context.Context, name string) (User, error)
+	DeleteMessage(ctx context.Context, arg DeleteMessageParams) error
+	StoreMessage(ctx context.Context, arg StoreMessageParams) (Message, error)
+	UpdateMessage(ctx context.Context, arg UpdateMessageParams) (Message, error)
 }
 
 var _ Querier = (*Queries)(nil)

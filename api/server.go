@@ -42,6 +42,10 @@ func (server *Server) setupRouter() {
 
 	routerVersionOne := router.Group("/v1")
 	{
+		routerVersionOne.POST("/users", server.createUser)
+		routerVersionOne.POST("/messages", server.storeMessage)
+		routerVersionOne.PATCH("/messages", server.updateMessage)
+		routerVersionOne.DELETE("/messages", server.deleteMessage)
 		routerVersionOne.GET("/hello", server.hello)
 		routerVersionOne.GET("/ws", func(ctx *gin.Context) {
 			webSocketHandler(ctx.Writer, ctx.Request)
@@ -65,12 +69,12 @@ func errorResponse(err error) Err {
 	return Err{Error: err.Error()}
 }
 
-type SuccessResponse struct {
-	Message string `json:"message"`
-}
+// type SuccessResponse struct {
+// 	Message string `json:"message"`
+// }
 
-// success response function
-func successResponse(msg string) SuccessResponse {
+// // success response function
+// func successResponse(msg string) SuccessResponse {
 
-	return SuccessResponse{Message: msg}
-}
+// 	return SuccessResponse{Message: msg}
+// }
