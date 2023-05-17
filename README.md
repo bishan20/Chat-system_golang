@@ -63,7 +63,7 @@ The following API endpoints are available:
 
 ### Message Endpoints
 
-- `GET /v1/messages`: Retrieves a list of messages. This endpoint is used to fetch a list of messages.
+- `POST /v1/messages`: Retrieves a list of messages. This endpoint is used to fetch a list of messages.
 
 - `PATCH /v1/messages`: Updates a message. This endpoint is used to edit or modify an existing message.
 
