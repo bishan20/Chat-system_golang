@@ -11,8 +11,10 @@ import (
 type Querier interface {
 	CreateUser(ctx context.Context, name string) (User, error)
 	DeleteMessage(ctx context.Context, arg DeleteMessageParams) error
+	ListMessages(ctx context.Context, arg ListMessagesParams) ([]Message, error)
 	StoreMessage(ctx context.Context, arg StoreMessageParams) (Message, error)
 	UpdateMessage(ctx context.Context, arg UpdateMessageParams) (Message, error)
+	UpdateMessageDelivery(ctx context.Context, id int32) (int32, error)
 }
 
 var _ Querier = (*Queries)(nil)

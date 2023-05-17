@@ -4,13 +4,17 @@
 
 package db
 
-import ()
+import (
+	"time"
+)
 
 type Message struct {
-	ID         int32  `db:"id" json:"id"`
-	Message    string `db:"message" json:"message"`
-	SenderID   int32  `db:"sender_id" json:"sender_id"`
-	ReceiverID int32  `db:"receiver_id" json:"receiver_id"`
+	ID          int32     `db:"id" json:"id"`
+	Message     string    `db:"message" json:"message"`
+	SenderID    int32     `db:"sender_id" json:"sender_id"`
+	ReceiverID  int32     `db:"receiver_id" json:"receiver_id"`
+	IsDelivered bool      `db:"is_delivered" json:"is_delivered"`
+	SentAt      time.Time `db:"sent_at" json:"sent_at"`
 }
 
 type User struct {

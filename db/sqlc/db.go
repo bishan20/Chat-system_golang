@@ -30,11 +30,17 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.deleteMessageStmt, err = db.PrepareContext(ctx, deleteMessage); err != nil {
 		return nil, fmt.Errorf("error preparing query DeleteMessage: %w", err)
 	}
+	if q.listMessagesStmt, err = db.PrepareContext(ctx, listMessages); err != nil {
+		return nil, fmt.Errorf("error preparing query ListMessages: %w", err)
+	}
 	if q.storeMessageStmt, err = db.PrepareContext(ctx, storeMessage); err != nil {
 		return nil, fmt.Errorf("error preparing query StoreMessage: %w", err)
 	}
 	if q.updateMessageStmt, err = db.PrepareContext(ctx, updateMessage); err != nil {
 		return nil, fmt.Errorf("error preparing query UpdateMessage: %w", err)
+	}
+	if q.updateMessageDeliveryStmt, err = db.PrepareContext(ctx, updateMessageDelivery); err != nil {
+		return nil, fmt.Errorf("error preparing query UpdateMessageDelivery: %w", err)
 	}
 	return &q, nil
 }
@@ -51,6 +57,11 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing deleteMessageStmt: %w", cerr)
 		}
 	}
+	if q.listMessagesStmt != nil {
+		if cerr := q.listMessagesStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing listMessagesStmt: %w", cerr)
+		}
+	}
 	if q.storeMessageStmt != nil {
 		if cerr := q.storeMessageStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing storeMessageStmt: %w", cerr)
@@ -59,6 +70,11 @@ func (q *Queries) Close() error {
 	if q.updateMessageStmt != nil {
 		if cerr := q.updateMessageStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing updateMessageStmt: %w", cerr)
+		}
+	}
+	if q.updateMessageDeliveryStmt != nil {
+		if cerr := q.updateMessageDeliveryStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing updateMessageDeliveryStmt: %w", cerr)
 		}
 	}
 	return err
@@ -98,21 +114,25 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db                DBTX
-	tx                *sql.Tx
-	createUserStmt    *sql.Stmt
-	deleteMessageStmt *sql.Stmt
-	storeMessageStmt  *sql.Stmt
-	updateMessageStmt *sql.Stmt
+	db                        DBTX
+	tx                        *sql.Tx
+	createUserStmt            *sql.Stmt
+	deleteMessageStmt         *sql.Stmt
+	listMessagesStmt          *sql.Stmt
+	storeMessageStmt          *sql.Stmt
+	updateMessageStmt         *sql.Stmt
+	updateMessageDeliveryStmt *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:                tx,
-		tx:                tx,
-		createUserStmt:    q.createUserStmt,
-		deleteMessageStmt: q.deleteMessageStmt,
-		storeMessageStmt:  q.storeMessageStmt,
-		updateMessageStmt: q.updateMessageStmt,
+		db:                        tx,
+		tx:                        tx,
+		createUserStmt:            q.createUserStmt,
+		deleteMessageStmt:         q.deleteMessageStmt,
+		listMessagesStmt:          q.listMessagesStmt,
+		storeMessageStmt:          q.storeMessageStmt,
+		updateMessageStmt:         q.updateMessageStmt,
+		updateMessageDeliveryStmt: q.updateMessageDeliveryStmt,
 	}
 }
