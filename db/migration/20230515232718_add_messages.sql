@@ -10,6 +10,10 @@ CREATE TABLE IF NOT EXISTS messages (
 ALTER TABLE messages ADD FOREIGN KEY (sender_id) REFERENCES users(id);
 
 ALTER TABLE messages ADD FOREIGN KEY (receiver_id) REFERENCES users(id);
+
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS is_delivered bool NOT NULL DEFAULT FALSE;
+
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS sent_at timestamp NOT NULL DEFAULT now();
 -- +goose StatementEnd
 
 -- +goose Down

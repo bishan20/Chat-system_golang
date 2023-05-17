@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "12b61a6b-ea55-48a6-b74b-385c68655bf0",
+		"name": "Chat System Http",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15714346"
+	},
+	"item": [
+		{
+			"name": "Create Users",
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Jack\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Messages",
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 6,\n    \"sender_id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/messages",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Messages",
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 3,\n    \"sender_id\": 1,\n    \"message\": \"I'm actually sick\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/messages",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Messages",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"sender_id\": 1,\n    \"receiver_id\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/messages",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"messages"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "List Messages",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sender_id\": 1,\n    \"receiver_id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/messages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 17 May 2023 09:19:40 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "263"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"message\": \"what is your name ?\",\n        \"sender_id\": 1,\n        \"receiver_id\": 3,\n        \"is_delivered\": false,\n        \"sent_at\": \"2023-05-17T09:07:10.606963Z\"\n    },\n    {\n        \"id\": 2,\n        \"message\": \"My name is Gabbar\",\n        \"sender_id\": 3,\n        \"receiver_id\": 1,\n        \"is_delivered\": false,\n        \"sent_at\": \"2023-05-17T09:07:28.926439Z\"\n    }\n]"
+				}
+			]
+		}
+	]
+}

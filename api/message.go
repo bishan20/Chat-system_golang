@@ -3,39 +3,42 @@ package api
 import (
 	db "Chat-system_golang/db/sqlc"
 	"database/sql"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type storeMessageRequest struct {
-	Message    string `json:"message" binding:"required"`
-	SenderId   int32  `json:"sender_id" binding:"required"`
-	ReceiverId int32  `json:"receiver_id" binding:"required"`
+type listMessageRequest struct {
+	SenderId   int32 `json:"sender_id" binding:"required"`
+	ReceiverId int32 `json:"receiver_id" binding:"required"`
 }
 
-func (server *Server) storeMessage(ctx *gin.Context) {
+func (server *Server) listMessages(ctx *gin.Context) {
 
-	var req storeMessageRequest
+	var req listMessageRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		fmt.Println("hello")
 		return
 	}
 
-	arg := db.StoreMessageParams{
-		Message:    req.Message,
+	arg := db.ListMessagesParams{
 		SenderID:   req.SenderId,
 		ReceiverID: req.ReceiverId,
 	}
 
-	message, err := server.store.StoreMessage(ctx, arg)
+	messages, err := server.store.ListMessages(ctx, arg)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			ctx.JSON(http.StatusNotFound, errorResponse(err))
+		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
 
-	ctx.JSON(http.StatusOK, message)
+	ctx.JSON(http.StatusOK, messages)
 }
 
 type updateMessageRequest struct {

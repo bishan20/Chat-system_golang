@@ -42,14 +42,16 @@ func (server *Server) setupRouter() {
 
 	routerVersionOne := router.Group("/v1")
 	{
+		routerVersionOne.GET("/ws", server.handleWebSocket)
 		routerVersionOne.POST("/users", server.createUser)
-		routerVersionOne.POST("/messages", server.storeMessage)
-		routerVersionOne.PATCH("/messages", server.updateMessage)
-		routerVersionOne.DELETE("/messages", server.deleteMessage)
 		routerVersionOne.GET("/hello", server.hello)
-		routerVersionOne.GET("/ws", func(ctx *gin.Context) {
-			webSocketHandler(ctx.Writer, ctx.Request)
-		})
+
+		messageRouter := routerVersionOne.Group("/messages")
+		{
+			messageRouter.POST("/", server.listMessages)
+			messageRouter.PATCH("/", server.updateMessage)
+			messageRouter.DELETE("/", server.deleteMessage)
+		}
 	}
 
 	server.router = router
